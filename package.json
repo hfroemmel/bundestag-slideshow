@@ -25,6 +25,7 @@
     "wait-on": "^8.0.1"
   },
   "build": {
+    "directories": { "output": "release" },
     "appId": "de.example.kiosk-slideshow",
     "productName": "Kiosk Slideshow",
     "files": ["dist/**/*", "electron/**/*", "package.json"],
