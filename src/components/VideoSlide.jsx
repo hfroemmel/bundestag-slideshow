@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import ProgressBar from "./ProgressBar.jsx";
 
 // Video ohne Controls, startet bei 0:00, wechselt erst nach "ended".
 // Bei Fehlern (Datei fehlt/defekt) wird nach kurzer Zeit weitergeschaltet, damit nichts hängen bleibt.
@@ -17,19 +18,22 @@ export default function VideoSlide({ slide, settings, active, onDone }) {
   };
 
   return (
-    <video
-      ref={ref}
-      src={slide.src}
-      autoPlay={active}
-      muted={settings.videoMuted}
-      playsInline
-      controls={false}
-      disablePictureInPicture
-      controlsList="nodownload nofullscreen noremoteplayback"
-      preload="auto"
-      style={{ objectFit: settings.objectFit }}
-      onEnded={() => onDone?.()}
-      onError={onError}
-    />
+    <>
+      <video
+        ref={ref}
+        src={slide.src}
+        autoPlay={active}
+        muted={settings.videoMuted}
+        playsInline
+        controls={false}
+        disablePictureInPicture
+        controlsList="nodownload nofullscreen noremoteplayback"
+        preload="auto"
+        style={{ objectFit: settings.objectFit }}
+        onEnded={() => onDone?.()}
+        onError={onError}
+      />
+      {settings.progressBar && <ProgressBar videoRef={ref} active={active} />}
+    </>
   );
 }

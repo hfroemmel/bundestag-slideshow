@@ -35,29 +35,41 @@ html, body, #root {
   display: block;
 }
 
-.pagination {
+/* Restzeit-Leiste: überlagert den Inhalt am unteren Rand */
+.progress {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: max(2.5vh, 24px);
-  display: flex;
-  justify-content: center;
-  gap: 12px;
+  bottom: 0;
+  height: max(0.4vh, 6px);
   z-index: 10;
+  pointer-events: none;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+.progress-fill {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  transform-origin: left center;
+  will-change: transform;
 }
 
-.dot-active { background: rgba(255, 255, 255, 0.95); }
+.progress-timed { animation: progress-shrink linear forwards; }
 
-.pagination-count {
-  color: rgba(255, 255, 255, 0.8);
-  font: 500 18px/1 system-ui, sans-serif;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+@keyframes progress-shrink {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+.notice {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8vw;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+  font: 400 max(3vw, 28px)/1.4 system-ui, sans-serif;
 }

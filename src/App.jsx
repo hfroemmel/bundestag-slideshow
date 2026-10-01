@@ -1,7 +1,7 @@
 import Slideshow from "./components/Slideshow.jsx";
-import slides from "./config/slides.js";
+import playlists from "./config/playlists.js";
 import settings from "./config/settings.js";
 
 export default function App() {
-  return <Slideshow slides={slides} settings={settings} />;
+  return <Slideshow playlists={playlists} settings={settings} />;
 }
