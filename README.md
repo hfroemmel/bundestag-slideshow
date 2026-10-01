@@ -6,21 +6,50 @@ Vollständig offline laufende Endlos-Slideshow für Hochformat-Displays. Keine I
 | Befehl | Zweck |
 |---|---|
 | `npm install` | Abhängigkeiten installieren |
-| `npm run dev` | Entwicklung (Vite + Electron im Fenster) |
-| `npm start` | Build + Start im Kiosk-Modus (Vollbild) |
-| `npm run dist:win` | Windows-Installer (auf Windows bauen) → `release/` |
+| `npm run dev` | Entwicklung (Vite + Electron im Fenster, lädt `example/kiosk-config.json`) |
+| `npm start` | Build + Start im Kiosk-Modus, Config-Dialog erscheint |
+| `npm run start:example` | wie `start`, aber direkt mit der Beispiel-Config |
+| `npm run dist:win` | Windows-Installer (auf Windows bauen oder per GitHub Workflow) → `release/` |
 | `npm run dist:mac` | macOS-App/DMG (auf macOS bauen) → `release/` |
 
 Beenden im Kiosk: **Strg/Cmd + Shift + Q** (oder Alt+F4 unter Windows).
 
-## Inhalte austauschen
-1. Dateien nach `public/slides/` legen (z. B. je Tag ein Ordner `public/slides/2026-10-02/`).
-2. `src/config/playlists.js` anpassen: je Veranstaltungstag eine Liste mit `date` (`"JJJJ-MM-TT"`), optional `imageDuration` (Standarddauer der Liste in ms) und `slides` (`type: "image" | "video"`, `src`, optional `duration` in ms pro Bild).
-3. Neu bauen (`npm run dist:win` / `dist:mac`).
+## Inhalte und Config (extern, ohne Neubau)
+Die Inhalte sind **nicht** in der App enthalten. Beim Start fragt ein Dialog nach der Konfigurationsdatei (JSON). Mit `--config <Datei>` (z. B. `"Kiosk Slideshow.exe" --config D:/kiosk/config.json`) entfällt der Dialog – praktisch für Autostart. Bei ungültiger Config erscheint eine Fehlermeldung mit Gründen und der Dialog öffnet erneut; fehlende Mediendateien werden vor dem Start gemeldet und zur Laufzeit übersprungen.
 
-Bilddauer = `slide.duration` → `liste.imageDuration` → `settings.imageDuration`.
-Allgemeine Einstellungen (Fade, `objectFit`, Hintergrund, Ton, Fortschrittsleiste, Hinweistext) stehen in `src/config/settings.js`.
-Dummy-Inhalte (je Tag 4 Bilder + 10 s Testvideo) erzeugt `scripts/generate-dummy-content.py`.
+Config ändern → App neu starten. Beispiel mit Medien: `example/kiosk-config.json`.
+
+```json
+{
+  "settings": {
+    "imageDuration": 8000,
+    "fadeDuration": 800,
+    "objectFit": "contain",
+    "background": "#000000",
+    "videoMuted": true,
+    "progressBar": true,
+    "noPlaylistMessage": "Für heute ist kein Programm hinterlegt.",
+    "dateCheckInterval": 10000
+  },
+  "playlists": [
+    {
+      "date": "2026-10-02",
+      "imageDuration": 10000,
+      "slides": [
+        { "type": "image", "src": "D:/kiosk/tag1/slide-01.jpg" },
+        { "type": "image", "src": "D:/kiosk/tag1/slide-02.jpg", "duration": 6000 },
+        { "type": "video", "src": "D:/kiosk/tag1/film.mp4" }
+      ]
+    }
+  ]
+}
+```
+- `settings` ist optional; fehlende Werte nehmen die Standards (wie oben gezeigt).
+- Pfade: absolut empfohlen. In JSON `/` verwenden oder Backslashes verdoppeln (`C:\\Ordner\\bild.jpg`). Relative Pfade gelten ab dem Ordner der Config.
+- Bilddauer = `slide.duration` → `liste.imageDuration` → `settings.imageDuration`.
+- `date` = `"JJJJ-MM-TT"`, je Datum eine Liste.
+- Videos: `.mp4` (H.264), `.webm`; Bilder: jpg, png, webp, gif, svg, avif.
+- Dummy-Inhalte erzeugt `scripts/generate-dummy-content.py` (→ `example/media`).
 
 ## Verhalten
 - Die App wählt per **lokalem Systemdatum** automatisch die Liste des Tages (kein Build/Code-Eingriff pro Tag nötig) und spielt sie als Endlosschleife.

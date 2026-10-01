@@ -1,0 +1,91 @@
+{
+  "settings": {
+    "imageDuration": 8000,
+    "fadeDuration": 800,
+    "objectFit": "contain",
+    "background": "#000000",
+    "videoMuted": true,
+    "progressBar": true,
+    "noPlaylistMessage": "Für heute ist kein Programm hinterlegt.",
+    "dateCheckInterval": 10000
+  },
+  "playlists": [
+    {
+      "date": "2026-10-02",
+      "slides": [
+        {
+          "type": "image",
+          "src": "media/2026-10-02/slide-01.jpg"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-02/slide-02.jpg"
+        },
+        {
+          "type": "video",
+          "src": "media/2026-10-02/video-01.mp4"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-02/slide-03.jpg"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-02/slide-04.jpg"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "imageDuration": 10000,
+      "slides": [
+        {
+          "type": "image",
+          "src": "media/2026-10-03/slide-01.jpg"
+        },
+        {
+          "type": "video",
+          "src": "media/2026-10-03/video-01.mp4"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-03/slide-02.jpg",
+          "duration": 6000
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-03/slide-03.jpg"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-03/slide-04.jpg"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "slides": [
+        {
+          "type": "image",
+          "src": "media/2026-10-04/slide-01.jpg"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-04/slide-02.jpg"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-04/slide-03.jpg"
+        },
+        {
+          "type": "video",
+          "src": "media/2026-10-04/video-01.mp4"
+        },
+        {
+          "type": "image",
+          "src": "media/2026-10-04/slide-04.jpg"
+        }
+      ]
+    }
+  ]
+}

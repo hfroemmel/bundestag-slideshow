@@ -5,11 +5,12 @@
   "private": true,
   "main": "electron/main.js",
   "scripts": {
-    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env ELECTRON_DEV=1 electron .\"",
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env ELECTRON_DEV=1 electron . --config example/kiosk-config.json\"",
     "start": "vite build && electron .",
     "build": "vite build",
     "dist:win": "vite build && electron-builder --win",
-    "dist:mac": "vite build && electron-builder --mac"
+    "dist:mac": "vite build && electron-builder --mac",
+    "start:example": "vite build && electron . --config example/kiosk-config.json"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -25,12 +26,31 @@
     "wait-on": "^8.0.1"
   },
   "build": {
-    "directories": { "output": "release" },
+    "directories": {
+      "output": "release"
+    },
     "appId": "de.example.kiosk-slideshow",
     "productName": "Kiosk Slideshow",
-    "files": ["dist/**/*", "electron/**/*", "package.json"],
-    "win": { "target": ["nsis"] },
-    "nsis": { "oneClick": true, "perMachine": false },
-    "mac": { "target": ["dmg", "dir"], "category": "public.app-category.utilities" }
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "dir"
+      ],
+      "category": "public.app-category.utilities"
+    }
   }
 }

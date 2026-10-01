@@ -4,7 +4,7 @@ import subprocess, os, math
 from PIL import Image, ImageDraw, ImageFont
 import imageio_ffmpeg
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "public", "slides")
+OUT = os.path.join(os.path.dirname(__file__), "..", "example", "media")
 W, H = 1080, 1920
 
 def font(size):
