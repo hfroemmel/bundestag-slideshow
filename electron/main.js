@@ -1,4 +1,5 @@
 const { app, BrowserWindow, powerSaveBlocker, Menu, dialog, ipcMain, protocol, net } = require("electron");
+const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const { loadConfig } = require("./config");
@@ -45,10 +46,28 @@ function setActiveConfig(config) {
   };
 }
 
-// --config <Datei> überspringt den Dialog (z. B. für Autostart).
+// --config <Datei> bzw. --config=<Datei> überspringt den Dialog (z. B. für Autostart).
+// Relative Pfade gelten ab dem Arbeitsordner (bei Verknüpfungen: "Ausführen in").
 function configFromArgs() {
-  const i = process.argv.indexOf("--config");
-  return i > 0 ? process.argv[i + 1] : null;
+  const args = process.argv.slice(1);
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--config" && args[i + 1]) return path.resolve(args[i + 1]);
+    if (args[i].startsWith("--config=")) return path.resolve(args[i].slice("--config=".length));
+  }
+  return null;
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Beim Autostart ist die Config evtl. noch nicht erreichbar (Netzlaufwerk, USB-Stick).
+// Daher bis zu 2 Minuten alle 5 s erneut versuchen, bevor der Dialog erscheint.
+async function loadConfigWithRetry(file) {
+  let result = loadConfig(file);
+  for (let i = 0; i < 24 && !result.config && !fs.existsSync(file); i++) {
+    await sleep(5000);
+    result = loadConfig(file);
+  }
+  return result;
 }
 
 // Fragt per Dialog nach der Config, bis eine gültige gewählt wurde. null = abgebrochen.
@@ -67,7 +86,7 @@ async function chooseConfig() {
       file = res.filePaths[0];
     }
 
-    const { config, errors, warnings } = loadConfig(file);
+    const { config, errors, warnings } = await loadConfigWithRetry(file);
     if (!config) {
       await dialog.showMessageBox({
         type: "error",

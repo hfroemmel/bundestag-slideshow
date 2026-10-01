@@ -17,6 +17,16 @@ Beenden im Kiosk: **Strg/Cmd + Shift + Q** (oder Alt+F4 unter Windows).
 ## Inhalte und Config (extern, ohne Neubau)
 Die Inhalte sind **nicht** in der App enthalten. Beim Start fragt ein Dialog nach der Konfigurationsdatei (JSON). Mit `--config <Datei>` (z. B. `"Kiosk Slideshow.exe" --config D:/kiosk/config.json`) entfällt der Dialog – praktisch für Autostart. Bei ungültiger Config erscheint eine Fehlermeldung mit Gründen und der Dialog öffnet erneut; fehlende Mediendateien werden vor dem Start gemeldet und zur Laufzeit übersprungen.
 
+### Autostart mit `--config`
+Windows (ohne Dialog beim Login): `scripts/install-autostart.ps1` legt die Verknüpfung automatisch an:
+```powershell
+.\scripts\install-autostart.ps1 -Exe "C:\Kiosk\Kiosk Slideshow.exe" -Config "D:\kiosk\config.json"
+```
+Oder manuell: `Win+R` → `shell:startup` → Verknüpfung auf die exe anlegen, unter *Ziel* anhängen: `--config "D:\kiosk\config.json"`.
+macOS: `open -a "Kiosk Slideshow" --args --config /Users/name/kiosk/config.json` (z. B. in einem Login-Skript/LaunchAgent).
+
+Ist die angegebene Datei beim Start noch nicht erreichbar (Netzlaufwerk, USB), wartet die App bis zu 2 Minuten und versucht es alle 5 s erneut. Danach (oder bei ungültiger Config) erscheint Fehlermeldung bzw. Dialog.
+
 Config ändern → App neu starten. Beispiel mit Medien: `example/kiosk-config.json`.
 
 ```json
